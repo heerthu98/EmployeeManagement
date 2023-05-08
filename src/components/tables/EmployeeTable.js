@@ -16,14 +16,18 @@ function EmployeeTable(props) {
   const [datas, setDatas] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [filter, setFilter] = useState(null);
-  const [isFilter, setIsFilter] = useState(false);
+  // const [isFilter, setIsFilter] = useState(false);
 
   useEffect(() => {
     if (props.reload === false) {
       const storeData = JSON.parse(localStorage.getItem("employees") || "[]");
       setDatas(storeData);
-      storeData.map((data) =>
-        setDepartments([...departments, data.department])
+      storeData.forEach((data) =>
+        setDepartments((prevDepartments) =>
+          prevDepartments.includes(data.department)
+            ? prevDepartments
+            : [...prevDepartments, data.department]
+        )
       );
     }
   }, [props.reload]);
